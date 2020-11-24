@@ -1,0 +1,16 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, #bebebe, #111313);
+  color: #fff;
+  font-size: 16px;
+  font-family: 'Times New Roman', serif;
+  text-shadow: #bbbbc4 2px 2px 5px;
+}
+
+h1:hover {
+  transform: scale(1.2);
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
