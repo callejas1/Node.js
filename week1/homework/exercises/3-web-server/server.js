@@ -6,35 +6,32 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 //create a server
-let server = http.createServer(function (req, res) {
+const server = http.createServer((req, res) => {
   // YOUR CODE GOES IN HERE
-  if (req.url === '/') {
-    fs.readFile(path.join(__dirname, '', 'index.html'), (err, data) => {
-      if (err) {
-        throw err;
-      } else {
-        res.writeHead(200, { 'Content-Type': 'text/html' }); // Sends index.html as a response back to the client
-        res.end(data); // Ends the response
-      }
-    });
-  } else if (req.url === '/index.js') {
-    fs.readFile(path.join(__dirname, '', 'index.js'), (error, content) => {
-      if (error) {
-        throw error;
-      } else {
-        res.setHeader('Content-Type', 'text/javascript'); // Send js file
-        res.end(content); // Ends the response
-      }
-    });
-  } else if (req.url === '/style.css') {
-    fs.readFile(path.join(__dirname, '', 'style.css'), (e, style) => {
+  const route = req.url; // get requested url
+
+  // file & contentType are retrieved depending on each case from req.url
+  const readFiles = (file, contentType) => {
+    fs.readFile(path.join(__dirname, '', file), (e, data) => {
       if (e) {
         throw e;
       } else {
-        res.setHeader('Content-Type', 'text/css'); // Send style.css
-        res.end(style); // Ends the response
+        res.setHeader('Content-Type', contentType); // Send file header
+        res.end(data);
       }
     });
+  };
+  // Change header and file to read depending on route
+  switch (route) {
+    case '/':
+      readFiles('/index.html', 'text/html');
+      break;
+    case '/index.js':
+      readFiles('index.js', 'text/javascript');
+      break;
+    case '/style.css':
+      readFiles('style.css', 'text/css');
+      break;
   }
 });
 
