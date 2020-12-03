@@ -32,6 +32,9 @@ const server = http.createServer((req, res) => {
     case '/style.css':
       readFiles('style.css', 'text/css');
       break;
+    default:
+      res.end('Invalid request');
+      break;
   }
 });
 
