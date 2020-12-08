@@ -18,15 +18,17 @@
         <input class="form-control form-control-lg border-right-0 border-top-0 border-left-0" type="text"
           name="cityName" placeholder="Enter a City">
         <div class="d-flex justify-content-center">
-          <button type="submit" class="btn btn-success mt-4">Submit <i class="far fa-paper-plane"></i>
+          <button type="submit" class="btn btn-info mt-4">SUBMIT <i class="far fa-paper-plane"></i>
           </button>
         </div>
       </form>
     </section>
     <section class="d-flex justify-content-center">
+      {{!-- Display city temperature if cityName is valid --}}
       {{#if cityName}}
       <p>The temperature in {{cityName}} is {{weatherText}}°C!</p>
       {{else}}
+      {{!-- Otherwise only display "City not found" --}}
       <p>{{weatherText}}</p>
       {{/if}}
     </section>

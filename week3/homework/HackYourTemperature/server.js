@@ -16,20 +16,32 @@ app.get('/', (req, res) => {
 });
 
 // Match endpoint to action attr of the form element
-app.post('/weather', (req, res) => {
-  const API_KEY = require('./sources/keys.json').API_KEY;
-  const cityName = req.body.cityName;
-  // get current weather from requested city ---- units=metric is to get temp in °C
-  axios
-    .get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&APPID=${API_KEY}`,
-    )
-    .then((response) => {
-      // render index + pertaining weather data
-      const weatherData = response.data.main.temp;
-      res.render('index', { weatherText: weatherData, cityName: cityName });
-    })
-    .catch((e) => res.render('index', { weatherText: 'City not found!' }));
+app.post('/weather', async (req, res) => {
+  try {
+    const API_KEY = require('./sources/keys.json').API_KEY;
+    const cityName = await req.body.cityName;
+    // get current weather from requested city ---- units=metric is to get temp in °C
+    axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&APPID=${API_KEY}`,
+      )
+      .then((response) => {
+        // render index + pertaining weather data
+        const weatherData = response.data.main.temp;
+        res.render('index', { weatherText: weatherData, cityName: cityName });
+      })
+      .catch((e) => res.render('index', { weatherText: 'City not found!' }));
+  } catch (e) {
+    res.render('index', {
+      weatherText:
+        'Oops! Looks like there was a problem with your request. ' + e.message,
+    });
+  }
+});
+
+// Display error page if path is invalid
+app.get('*', (req, res) => {
+  res.render('404', { path: req.path });
 });
 
 // get environment port or set to 3000
